@@ -55,6 +55,7 @@ export class HomePage {
                              '<h2 id="firstHeading class="firstHeading>'+ marker.title + '</h2>' +
                              '<p>Latitude: ' + marker.latitude + '</p>' +
                              '<p>Longitude:' + marker.longitude + '</p>'+
+                             '<ion-button id="navigate">Navigate</ion-button>'+
                              '</div>';
         
     let infoWindow = new google.maps.InfoWindow({
@@ -63,7 +64,15 @@ export class HomePage {
     marker.addListener('click',()=>{
       this.closeAllInfoWindows();
       infoWindow.open(this.map, marker);
-    });                  
+    }); 
+    
+    google.maps.event.addListenerOnce(infoWindow, 'domready', ()=>{
+      document.getElementById('navigate').addEventListener('click', ()=>{
+        console.log('navigation button clicked');
+        window.open('https://www.google.com/maps/dir/?api=1&destination=' + marker.latitude + ',' + marker.longitude)
+      })
+    });
+
     this.infoWindows.push(infoWindow);
     console.log(this.infoWindows,'infowindows');
   }
